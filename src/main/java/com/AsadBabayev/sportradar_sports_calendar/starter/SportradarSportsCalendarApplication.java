@@ -1,0 +1,21 @@
+package com.AsadBabayev.sportradar_sports_calendar.starter;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication(scanBasePackages = "com.AsadBabayev")
+@ComponentScan(basePackages = "com.AsadBabayev")
+@EnableJpaRepositories(basePackages = "com.AsadBabayev")
+@EntityScan(basePackages = "com.AsadBabayev")
+@EnableJpaAuditing
+public class SportradarSportsCalendarApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SportradarSportsCalendarApplication.class, args);
+	}
+
+}
