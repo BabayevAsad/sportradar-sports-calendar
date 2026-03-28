@@ -8,6 +8,8 @@ import com.AsadBabayev.sportradar_sports_calendar.entity.SportType;
 import com.AsadBabayev.sportradar_sports_calendar.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,12 @@ public class EventControllerImpl implements EventController {
 
     private final EventService eventService;
 
-    @GetMapping()
-    @Override
-    public ResponseEntity<EventResponseDTO> getAllEvents() {
-        return ResponseEntity.ok(eventService.getAllEvents());
+    @GetMapping
+    public ResponseEntity<EventResponseDTO> getAllEvents(@PageableDefault(size = 5) Pageable pageable) {
+
+        EventResponseDTO response = eventService.getAllEvents(pageable);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

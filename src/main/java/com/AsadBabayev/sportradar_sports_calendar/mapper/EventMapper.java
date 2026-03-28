@@ -2,9 +2,13 @@ package com.AsadBabayev.sportradar_sports_calendar.mapper;
 
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventRequestDTO;
+import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventResponseDTO;
 import com.AsadBabayev.sportradar_sports_calendar.entity.Event;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -34,6 +38,24 @@ public class EventMapper {
                 .stage(stageMapper.toDTO(event.getStage()))
                 .originCompetitionId(event.getCompetition() != null ? event.getCompetition().getId() : null)
                 .originCompetitionName(event.getCompetition() != null ? event.getCompetition().getName() : null)
+                .build();
+    }
+
+    public EventResponseDTO mapToResponseDTO(Page<Event> eventPage) {
+        if (eventPage == null) return null;
+
+        List<EventDTO> events = eventPage.getContent()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+
+        return EventResponseDTO.builder()
+                .data(events)
+                .currentPage(eventPage.getNumber())
+                .totalElements(eventPage.getTotalElements())
+                .totalPages(eventPage.getTotalPages())
+                .pageSize(eventPage.getSize())
+                .isLast(eventPage.isLast())
                 .build();
     }
 

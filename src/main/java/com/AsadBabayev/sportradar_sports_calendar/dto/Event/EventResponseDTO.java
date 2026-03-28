@@ -10,4 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 public class EventResponseDTO {
     private List<EventDTO> data;
+
+    private int currentPage;
+    private long totalElements;
+    private int totalPages;
+    private int pageSize;
+    private boolean isLast;
 }

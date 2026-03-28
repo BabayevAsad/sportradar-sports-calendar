@@ -4,6 +4,7 @@ import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventRequestDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventResponseDTO;
 import com.AsadBabayev.sportradar_sports_calendar.entity.SportType;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface EventController {
 
-    ResponseEntity<EventResponseDTO> getAllEvents();
+    ResponseEntity<EventResponseDTO> getAllEvents(Pageable pageable);
 
     ResponseEntity<EventDTO> getEventById(Long id);
 

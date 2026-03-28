@@ -10,6 +10,8 @@ import com.AsadBabayev.sportradar_sports_calendar.repository.*;
 import com.AsadBabayev.sportradar_sports_calendar.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,15 +33,10 @@ public class EventServiceImpl implements EventService {
 
     @Transactional(readOnly = true)
     @Override
-    public EventResponseDTO getAllEvents() {
-        List<EventDTO> events = eventRepository.findAll()
-                .stream()
-                .map(eventMapper::mapToDTO)
-                .toList();
+    public EventResponseDTO getAllEvents(Pageable pageable) {
+        Page<Event> eventPage = eventRepository.findAll(pageable);
 
-        return EventResponseDTO.builder()
-                .data(events)
-                .build();
+        return eventMapper.mapToResponseDTO(eventPage);
     }
 
     @Transactional(readOnly = true)
