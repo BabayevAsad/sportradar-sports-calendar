@@ -1,0 +1,19 @@
+AI REFLECTION
+
+During this project, I used AI (ChatGPT, Gemini) as a support tool to help me understand concepts and speed up development.
+
+First, I usually created the structure in my mind before asking AI. I tried to think about what I needed (for example: entities, services, controllers, or frontend logic). Then I described my idea to AI and asked it to generate code for specific parts, like a class or function.
+
+For example, when I needed a class, I explained what fields and logic it should have. AI helped me generate a basic version of that class. After that, I reviewed the code, made corrections, and adjusted it to match my project.
+
+I also used AI to:
+- Fix errors and debug problems in my code
+- Improve code structure and readability
+- Generate simple frontend code based on backend entities
+- Help with validation and form handling by providing ready validation messages for different fields
+- Suggest commit messages and improved naming based on my ideas
+- Help generate similar logic for different classes when code repetition was required
+
+I usually asked AI after writing my own version of the code: “Is there a better version?”. If there was a better solution, I checked it carefully, tried to understand it, and used it only if it was truly better.
+
+Overall, AI is a helpful assistant, but I am responsible for understanding the code and building the final solution myself. I use AI in my daily life to learn new things, explore new skills, and develop myself.
