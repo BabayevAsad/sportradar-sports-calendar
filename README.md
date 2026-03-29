@@ -39,6 +39,8 @@ Events (Matches): The central entity linking a Competition, Venue, Stage, and Tw
 Results: Sport-specific data (goals, points, or sets) linked 1-to-1 with an Event.
 
 ## 📊 Database Modeling & Design Decisions
+![ERD (Entity Relationship Diagram)](https://github.com/user-attachments/assets/b20775e5-6089-4177-a6bb-6933cc33e23b)
+
 ## 🏗️ 3rd Normal Form (3NF) Compliance
 The database schema is fully normalized to 3NF to eliminate redundancy and ensure data integrity:
 
