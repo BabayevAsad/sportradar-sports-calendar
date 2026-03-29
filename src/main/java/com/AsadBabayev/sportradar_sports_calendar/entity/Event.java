@@ -21,14 +21,14 @@ public class Event extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competition_id", nullable = false)
+    @JoinColumn(name = "_competition_id", nullable = false)
     private Competition competition;
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Result result;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stage_id", nullable = false)
+    @JoinColumn(name = "_stage_id", nullable = false)
     private Stage stage;
 
     @Column(nullable = false)
@@ -41,14 +41,14 @@ public class Event extends BaseEntity {
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "venue_id")
+    @JoinColumn(name = "_venue_id")
     private Venue venue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "home_team_id")
+    @JoinColumn(name = "_home_team_id")
     private Team homeTeam;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "away_team_id")
+    @JoinColumn(name = "_away_team_id")
     private Team awayTeam;
 }

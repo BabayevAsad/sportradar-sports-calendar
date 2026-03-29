@@ -21,6 +21,6 @@ public class Competition extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sport_id", nullable = false)
+    @JoinColumn(name = "_sport_id", nullable = false)
     private Sport sport;
 }

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Events</title>
+    <link rel="icon" href="data:,">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-trophy me-2"></i>SportFlow
+        </div>
+        <nav>
+            <div class="nav-item active" data-target="teamView">
+                <i class="fa-solid fa-users"></i> Teams
+            </div>
+            <div class="nav-item" data-target="sportView">
+                <i class="fa-solid fa-basketball"></i> Sports
+            </div>
+            <div class="nav-item" data-target="venueView">
+                <i class="fa-solid fa-location-dot"></i> Venues
+            </div>
+            <div class="nav-item" data-target="competationView">
+                <i class="fa-solid fa-medal"></i> Competitions
+            </div>
+            <div class="nav-item" data-target="stageView">
+                <i class="fa-solid fa-layer-group"></i> Stages
+            </div>
+            <div class="nav-item" data-target="eventView">
+                <i class="fa-solid fa-calendar-check"></i> Events
+            </div>
+            <div class="nav-item" data-target="resultView">
+                <i class="fa-solid fa-square-poll-vertical"></i> Results
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <section id="teamView" class="view-section active">
+            <h2 class="mb-4">Team Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Register / Update Team</div>
+                        <div class="card-body">
+                            <form id="teamRegistrationForm">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Team Name</label>
+                                    <input type="text" class="form-control" id="teamName"
+                                           placeholder="e.g. Real Madrid" required maxlength="50">
+                                    <small id="teamNameError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Official Name</label>
+                                    <input type="text" class="form-control" id="officialName"
+                                           placeholder="e.g. Real Madrid Club de Fútbol" required maxlength="100">
+                                    <small id="officialNameError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Slug</label>
+                                    <input type="text" class="form-control" id="teamSlug"
+                                           placeholder="real-madrid-fc" required
+                                           pattern="^[a-z0-9-]+$"
+                                           title="Slug must contain only lowercase letters, numbers, and hyphens">
+                                    <small id="teamSlugError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Abbreviation</label>
+                                    <input type="text" class="form-control" id="abbreviation"
+                                           placeholder="RMA" required minlength="2" maxlength="5">
+                                    <small id="abbreviationError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Country Code</label>
+                                    <input type="text" class="form-control" id="countryCode"
+                                           placeholder="ESP" required
+                                           pattern="^[A-Z]{2,3}$"
+                                           title="Country code must be 2 or 3 uppercase letters (e.g., ESP)">
+                                    <small id="countryCodeError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Stage Position</label>
+                                    <input type="number" class="form-control" id="stagePos"
+                                           value="1" min="1">
+                                    <small id="stagePosError" class="text-danger"></small>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Save Team to Database</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 mt-2"
+                                        onclick="resetForm('teamRegistrationForm')">Cancel</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">Existing Teams</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Slug/Abbr</th>
+                                        <th>Country</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="teamListTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sportView" class="view-section">
+            <h2 class="mb-4">Sport Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card"><div class="card-header">Create / Edit Sport</div><div class="card-body">
+                        <form id="sportForm">
+                            <div class="mb-3"><label class="form-label">Sport Type</label>
+                                <select class="form-select" id="sportName" required>
+                                    <option value="" selected disabled>Select a Sport</option>
+                                    <option value="FOOTBALL">Football</option><option value="ICE_HOCKEY">Ice Hockey</option>
+                                    <option value="TENNIS">Tennis</option><option value="BASKETBALL">Basketball</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Save Sport</button>
+                        </form>
+                    </div></div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card"><div class="card-header">Existing Sports</div><div class="card-body">
+                        <div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Name</th><th class="text-end">Actions</th></tr></thead><tbody id="sportListTable"></tbody></table></div>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="venueView" class="view-section">
+            <h2 class="mb-4">Venue Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Create / Edit Venue</div>
+                        <div class="card-body">
+                            <form id="venueForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Venue Name</label>
+                                    <input type="text" class="form-control" id="venueName"
+                                           placeholder="e.g. Santiago Bernabéu"
+                                           required maxlength="50">
+                                    <small id="venueNameError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" id="venueCity"
+                                           placeholder="e.g. Madrid"
+                                           required maxlength="50">
+                                    <small id="venueCityError" class="text-danger"></small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="venueCountry"
+                                           placeholder="e.g. Spain"
+                                           required maxlength="50">
+                                    <small id="venueCountryError" class="text-danger"></small>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Save Venue</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card"><div class="card-header">Existing Venues</div><div class="card-body">
+                        <div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>City</th><th>Country</th><th class="text-end">Actions</th></tr></thead><tbody id="venueListTable"></tbody></table></div>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="competationView" class="view-section">
+            <h2 class="mb-4">Competition Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Create / Edit Competition</div>
+                        <div class="card-body">
+                            <form id="competationForm">
+                                <div class="mb-3"><label class="form-label">Competition ID</label><input type="text" class="form-control" id="compId" placeholder="sr:competition:1" required></div>
+                                <div class="mb-3"><label class="form-label">Competition Name</label><input type="text" class="form-control" id="compName" required></div>
+                                <div class="mb-3"><label class="form-label">Sport Category</label><select class="form-select" id="compSportId" name="sportId" required><option value="" selected disabled>Select a Sport</option></select></div>
+                                <button type="submit" class="btn btn-primary w-100">Save Competition</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card"><div class="card-header">Existing Competitions</div><div class="card-body">
+                        <div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Sport</th><th class="text-end">Actions</th></tr></thead><tbody id="competationListTable"></tbody></table></div>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stageView" class="view-section">
+            <h2 class="mb-4">Stage Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Create / Edit Stage</div>
+                        <div class="card-body">
+                            <form id="stageForm">
+                                <div class="mb-3"><label class="form-label">Stage ID (URN)</label><input type="text" class="form-control" id="stageId" placeholder="sr:stage:1" required></div>
+                                <div class="mb-3"><label class="form-label">Stage Name</label><input type="text" class="form-control" id="stageName" required></div>
+                                <div class="mb-3"><label class="form-label">Ordering</label><input type="number" class="form-control" id="stageOrdering" value="1" min="1" required></div>
+                                <button type="submit" class="btn btn-primary w-100">Save Stage</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card"><div class="card-header">Existing Stages</div><div class="card-body">
+                        <div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Ordering</th><th class="text-end">Actions</th></tr></thead><tbody id="stageListTable"></tbody></table></div>
+                    </div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="eventView" class="view-section">
+            <h2 class="mb-4">Event Management</h2>
+
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Create / Edit Event</div>
+                        <div class="card-body">
+                            <form id="eventForm">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Date & Time</label>
+                                    <input type="datetime-local" class="form-control" id="eventDate" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Sport</label>
+                                    <select class="form-select" id="eventSportId" required>
+                                        <option value="" selected disabled>Select Sport</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Competition</label>
+                                    <select class="form-select" id="eventCompetitionId" required>
+                                        <option value="" selected disabled>Select Competition</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Stage</label>
+                                    <select class="form-select" id="eventStageId" required>
+                                        <option value="" selected disabled>Select Stage</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Venue</label>
+                                    <select class="form-select" id="eventVenueId" required>
+                                        <option value="" selected disabled>Select Venue</option>
+                                    </select>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Home Team</label>
+                                        <select class="form-select" id="eventHomeTeam" required>
+                                            <option value="" selected disabled>Select Home</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Away Team</label>
+                                        <select class="form-select" id="eventAwayTeam" required>
+                                            <option value="" selected disabled>Select Away</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Save Event</button>
+                                <button type="button" class="btn btn-outline-secondary w-100 mt-2"
+                                        onclick="resetForm('eventForm')">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+
+                    <div class="card mb-4">
+                        <div class="card-header">Existing Events</div>
+                        <div class="card-body">
+                            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Teams</th>
+                                        <th>Date</th>
+                                        <th>Venue</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="eventListTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-info shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            Event Details
+                        </div>
+
+                        <div class="card-body" id="eventDetails">
+                            <p class="text-muted">Select an event to view details</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card border-primary mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Search Events</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <input type="date" id="filterDate" class="form-control">
+                        </div>
+
+                        <div class="col-md-5">
+                            <select id="filterSport" class="form-select">
+                                <option value="">All Sports</option>
+                                <option value="FOOTBALL">Football</option>
+                                <option value="BASKETBALL">Basketball</option>
+                                <option value="TENNIS">Tennis</option>
+                                <option value="ICE_HOCKEY">Ice Hockey</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" onclick="applyEventFilters()">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="filterResultsSection" class="card mt-3 ">
+                <div class="card-header">
+                    <strong id="resultsCount">0 Found</strong>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Teams</th>
+                                <th>Date</th>
+                                <th>Sport</th>
+                                <th class="text-end">Venue</th>
+                            </tr>
+                            </thead>
+                            <tbody id="filterResultsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="resultView" class="view-section">
+            <h2 class="mb-4">Result Management</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">Create / Edit Result</div>
+                        <div class="card-body">
+                            <form id="resultForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Event</label>
+                                    <select class="form-select" id="resultEventId" required>
+                                        <option value="" selected disabled>Select Event</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Winner (Slug)</label>
+                                    <input type="text" class="form-control" id="resultWinner" placeholder="e.g. real-madrid" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message / Summary</label>
+                                    <textarea class="form-control" id="resultMessage" rows="2" placeholder="Match summary..."></textarea>
+                                </div>
+                                <hr>
+                                <div id="dynamicResultFields">
+                                    <p class="text-muted">Select an event to enter scores.</p>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-3">Save Result</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header">Existing Results</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Sport</th>
+                                        <th>Winner</th>
+                                        <th>Summary</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="resultListTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    // Navigation Logic
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            item.classList.add('active');
+            const targetId = item.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // Form Reset Logic
+    function resetForm(formId) {
+        const form = document.getElementById(formId);
+        if (form) {
+            form.reset();
+            delete form.dataset.editId;
+            const idInput = form.querySelector('input[id$="Id"]');
+            if(idInput) idInput.disabled = false;
+            if (formId === 'resultForm') {
+                const dynamicFields = document.getElementById('dynamicResultFields');
+                if (dynamicFields) dynamicFields.innerHTML = '<p class="text-muted">Select an event to enter scores.</p>';
+            }
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if(submitBtn) {
+                const btnTexts = {
+                    'teamRegistrationForm': 'Save Team to Database',
+                    'sportForm': 'Save Sport',
+                    'competationForm': 'Save Competition',
+                    'venueForm': 'Save Venue',
+                    'stageForm': 'Save Stage',
+                    'eventForm': 'Save Event',
+                    'resultForm': 'Save Result'
+                };
+                submitBtn.textContent = btnTexts[formId] || "Save Configuration";
+                submitBtn.classList.replace('btn-warning', 'btn-primary');
+            }
+        }
+    }
+</script>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/team-management.js}"></script>
+<script th:src="@{/js/sport-management.js}"></script>
+<script th:src="@{/js/venue-management.js}"></script>
+<script th:src="@{/js/competition-management.js}"></script>
+<script th:src="@{/js/stage-management.js}"></script>
+<script th:src="@{/js/event-management.js(v=3)}"></script>
+<script th:src="@{/js/result-management.js}"></script>
+
+</body>
+</html>
