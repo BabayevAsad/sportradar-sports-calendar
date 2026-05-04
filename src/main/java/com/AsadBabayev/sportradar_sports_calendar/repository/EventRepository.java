@@ -15,18 +15,23 @@ import java.util.Optional;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition", "stage"})
+    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
+            "stage","venue"})
     Page<Event> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition", "stage"})
+    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
+            "stage","venue"})
     List<Event> findByDate(LocalDate date);
 
-    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition", "stage"})
+    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
+            "stage","venue"})
     List<Event> findByCompetition_Id(String competitionId);
 
-    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition", "stage"})
+    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
+            "stage","venue"})
     Optional<Event> findById(Long id);
 
-    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition", "stage"})
+    @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
+            "stage","venue"})
     List<Event> findByCompetition_Sport_Name(SportType sportName);
 }
