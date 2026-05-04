@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class StageDTO {
 
-    private String id;
+    private Long id;
     private String name;
 
     private Integer ordering;

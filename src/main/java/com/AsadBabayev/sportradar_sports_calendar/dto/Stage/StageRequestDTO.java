@@ -12,9 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 public class StageRequestDTO {
 
-    @NotBlank(message = "Stage ID is required")
-    private String id;
-
     @NotBlank(message = "Stage name is required")
     @Size(max = 50, message = "Stage name is too long")
     private String name;

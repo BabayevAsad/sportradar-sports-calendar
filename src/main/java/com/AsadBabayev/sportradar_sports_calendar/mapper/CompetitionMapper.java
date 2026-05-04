@@ -30,9 +30,6 @@ public class CompetitionMapper {
     public void updateEntityFromDto(CompetitionRequestDTO dto, Competition competition) {
         if (dto == null || competition == null) return;
 
-        if (dto.getId() != null) {
-            competition.setId(dto.getId());
-        }
         competition.setName(dto.getName());
 
         if (dto.getSportId() != null) {

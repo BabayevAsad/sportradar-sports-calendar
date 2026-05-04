@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -69,8 +68,8 @@ class EventControllerImplUnitTest {
                 .build();
 
         requestDto = EventRequestDTO.builder()
-                .competitionId("sr:comp:1")
-                .stageId("sr:stage:1")
+                .competitionId(1L)
+                .stageId(1L)
                 .date(LocalDate.now().plusDays(1))
                 .timeUtc(LocalTime.of(20, 0))
                 .status("scheduled")
@@ -90,48 +89,66 @@ class EventControllerImplUnitTest {
     @Test
     void shouldReturnEventDtoForGivenId() throws Exception {
         when(eventService.getEventById(1L)).thenReturn(footballEventDto);
-        mockMvc.perform(get(BASE_URL + "/1")).andExpect(status().isOk());
+
+        mockMvc.perform(get(BASE_URL + "/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.sportName").value("FOOTBALL"));
     }
 
     @Test
     void shouldReturnPaginatedListOfEvents() throws Exception {
         when(eventService.getAllEvents(any(Pageable.class))).thenReturn(responsePageDto);
-        mockMvc.perform(get(BASE_URL)).andExpect(status().isOk());
+
+        mockMvc.perform(get(BASE_URL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].id").value(1L));
     }
 
     @Test
     void shouldSaveEventAndReturnDto() throws Exception {
         when(eventService.saveEvent(any(EventRequestDTO.class))).thenReturn(footballEventDto);
+
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(requestDto)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L));
     }
 
     @Test
     void shouldUpdateEventAndReturnDto() throws Exception {
         when(eventService.updateEvent(any(EventRequestDTO.class), eq(1L))).thenReturn(footballEventDto);
+
         mockMvc.perform(put(BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L));
     }
 
     @Test
     void shouldDeleteEvent() throws Exception {
-        mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isNoContent());
+        mockMvc.perform(delete(BASE_URL + "/1"))
+                .andExpect(status().isNoContent());
+
         verify(eventService).deleteEvent(1L);
     }
 
     @Test
     void shouldReturnEventsBySportType() throws Exception {
-        when(eventService.getEventsBySport(SportType.FOOTBALL)).thenReturn(List.of(footballEventDto));
-        mockMvc.perform(get(BASE_URL + "/by-sport/FOOTBALL")).andExpect(status().isOk());
+        when(eventService.getEventsBySport(SportType.FOOTBALL))
+                .thenReturn(List.of(footballEventDto));
+
+        mockMvc.perform(get(BASE_URL + "/by-sport/FOOTBALL"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].sportName").value("FOOTBALL"));
     }
 
     @Test
     void shouldReturnBadRequestWhenStatusIsInvalid() throws Exception {
         requestDto.setStatus("wrong");
+
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(requestDto)))
@@ -141,6 +158,7 @@ class EventControllerImplUnitTest {
     @Test
     void shouldReturnBadRequestWhenDateIsInPast() throws Exception {
         requestDto.setDate(LocalDate.now().minusDays(1));
+
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(requestDto)))
@@ -148,11 +166,11 @@ class EventControllerImplUnitTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenEventDoesNotExist() {
-        when(eventService.getEventById(99L)).thenThrow(new EntityNotFoundException("Not found"));
+    void shouldReturnNotFoundWhenEventDoesNotExist() throws Exception {
+        when(eventService.getEventById(99L))
+                .thenThrow(new EntityNotFoundException("Not found"));
 
-        assertThrows(Exception.class, () -> {
-            mockMvc.perform(get(BASE_URL + "/99"));
-        });
+        mockMvc.perform(get(BASE_URL + "/99"))
+                .andExpect(status().isNotFound());
     }
 }

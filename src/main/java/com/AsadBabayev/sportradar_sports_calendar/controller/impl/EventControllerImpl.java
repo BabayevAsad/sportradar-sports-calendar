@@ -68,7 +68,7 @@ public class EventControllerImpl implements EventController {
 
     @GetMapping("/by-competition/{competitionId}")
     @Override
-    public ResponseEntity<List<EventDTO>> getEventsByCompetition(@Valid @PathVariable String competitionId) {
+    public ResponseEntity<List<EventDTO>> getEventsByCompetition(@Valid @PathVariable Long competitionId) {
         return ResponseEntity.ok(eventService.getEventByCompetitionId(competitionId));
     }
 

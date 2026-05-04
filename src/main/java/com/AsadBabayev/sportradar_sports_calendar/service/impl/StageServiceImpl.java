@@ -31,7 +31,7 @@ public class StageServiceImpl implements StageService {
 
     @Transactional(readOnly = true)
     @Override
-    public StageDTO getStageById(String id) {
+    public StageDTO getStageById(Long id) {
         return stageMapper.toDTO(findByIdInternal(id));
     }
 
@@ -47,7 +47,7 @@ public class StageServiceImpl implements StageService {
 
     @Transactional
     @Override
-    public StageDTO updateStage(StageRequestDTO requestDTO, String id) {
+    public StageDTO updateStage(StageRequestDTO requestDTO, Long id) {
         Stage stage = findByIdInternal(id);
 
         stageMapper.updateEntityFromDto(requestDTO, stage);
@@ -57,12 +57,12 @@ public class StageServiceImpl implements StageService {
 
     @Transactional
     @Override
-    public void deleteStage(String id) {
+    public void deleteStage(Long id) {
         Stage stage = findByIdInternal(id);
         stageRepository.delete(stage);
     }
 
-    private Stage findByIdInternal(String id) {
+    private Stage findByIdInternal(Long id) {
         return stageRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Stage not found with id: " + id));
     }

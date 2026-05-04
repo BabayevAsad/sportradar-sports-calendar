@@ -15,5 +15,5 @@ public abstract class ResultDTO {
     private String message;
 
     private String sportName;
-    private String competitionId;
+    private Long competitionId;
 }

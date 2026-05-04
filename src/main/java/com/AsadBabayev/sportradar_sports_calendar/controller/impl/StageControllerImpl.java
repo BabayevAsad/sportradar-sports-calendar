@@ -26,7 +26,7 @@ public class StageControllerImpl implements StageController {
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<StageDTO> getStageById(@PathVariable String id) {
+    public ResponseEntity<StageDTO> getStageById(@PathVariable Long id) {
         return ResponseEntity.ok(stageService.getStageById(id));
     }
 
@@ -39,13 +39,13 @@ public class StageControllerImpl implements StageController {
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<StageDTO> updateStage(@Valid @RequestBody StageRequestDTO requestDTO,
-                                                @PathVariable String id) {
+                                                @PathVariable Long id) {
         return ResponseEntity.ok(stageService.updateStage(requestDTO, id));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<Void> deleteStage(@PathVariable String id) {
+    public ResponseEntity<Void> deleteStage(@PathVariable Long id) {
         stageService.deleteStage(id);
         return ResponseEntity.noContent().build();
     }

@@ -54,7 +54,7 @@ class ResultControllerImplUnitTest {
                 setWinner("liverpool-fc");
                 setMessage("Clinical finishing");
                 setSportName("FOOTBALL");
-                setCompetitionId("sr:comp:1");
+                setCompetitionId(1L);
             }
         };
 

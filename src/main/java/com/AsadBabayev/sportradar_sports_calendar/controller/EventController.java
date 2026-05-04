@@ -24,7 +24,7 @@ public interface EventController {
 
     ResponseEntity<List<EventDTO>> getEventsByDate(LocalDate date);
 
-    ResponseEntity<List<EventDTO>> getEventsByCompetition(String competitionId);
+    ResponseEntity<List<EventDTO>> getEventsByCompetition(Long competitionId);
 
     ResponseEntity<List<EventDTO>> getEventsBySport(SportType sport);
 }

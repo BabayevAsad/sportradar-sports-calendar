@@ -10,11 +10,11 @@ public interface CompetitionController {
 
     ResponseEntity<List<CompetitionDTO>> getAllCompetitions();
 
-    ResponseEntity<CompetitionDTO> getCompetitionById(String id);
+    ResponseEntity<CompetitionDTO> getCompetitionById(Long id);
 
     ResponseEntity<CompetitionDTO> createCompetition(CompetitionRequestDTO requestDTO);
 
-    ResponseEntity<CompetitionDTO> updateCompetition(CompetitionRequestDTO requestDTO, String id);
+    ResponseEntity<CompetitionDTO> updateCompetition(CompetitionRequestDTO requestDTO, Long id);
 
-    ResponseEntity<Void> deleteCompetition(String id);
+    ResponseEntity<Void> deleteCompetition(Long id);
 }

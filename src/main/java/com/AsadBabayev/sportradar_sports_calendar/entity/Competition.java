@@ -5,7 +5,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "competition")
+@Table(name = "competition",uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name"})})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,8 @@ public class Competition extends BaseEntity {
 
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;

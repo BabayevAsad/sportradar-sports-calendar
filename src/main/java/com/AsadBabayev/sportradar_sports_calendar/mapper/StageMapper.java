@@ -21,10 +21,6 @@ public class StageMapper {
     public void updateEntityFromDto(StageRequestDTO dto, Stage stage) {
         if (dto == null || stage == null) return;
 
-        if (dto.getId() != null) {
-            stage.setId(dto.getId());
-        }
-
         stage.setName(dto.getName());
         stage.setOrdering(dto.getOrdering());
     }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @JsonPropertyOrder({ "id", "sportName", "name", "createdTime", "updatedTime" })
 public class CompetitionDTO {
-    private String id;
+    private Long id;
     private String name;
     private String sportName;
 

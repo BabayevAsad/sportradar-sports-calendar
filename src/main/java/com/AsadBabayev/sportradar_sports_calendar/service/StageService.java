@@ -9,11 +9,11 @@ public interface StageService {
 
     List<StageDTO> getAllStages();
 
-    StageDTO getStageById(String id);
+    StageDTO getStageById(Long id);
 
     StageDTO saveStage(StageRequestDTO stageRequestDTO);
 
-    StageDTO updateStage(StageRequestDTO stageRequestDTO, String id);
+    StageDTO updateStage(StageRequestDTO stageRequestDTO, Long id);
 
-    void deleteStage(String id);
+    void deleteStage(Long id);
 }

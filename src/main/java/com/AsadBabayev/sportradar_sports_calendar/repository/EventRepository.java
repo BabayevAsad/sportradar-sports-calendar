@@ -25,7 +25,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
             "stage","venue"})
-    List<Event> findByCompetition_Id(String competitionId);
+    List<Event> findByCompetition_Id(Long competitionId);
 
     @EntityGraph(attributePaths = {"result", "homeTeam", "awayTeam", "competition","competition.sport",
             "stage","venue"})

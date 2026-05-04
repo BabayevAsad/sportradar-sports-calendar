@@ -23,7 +23,7 @@ public interface EventService {
 
     List<EventDTO> getEventByDate(LocalDate date);
 
-    List<EventDTO> getEventByCompetitionId(String competitionId);
+    List<EventDTO> getEventByCompetitionId(Long competitionId);
 
     List<EventDTO> getEventsBySport(SportType sport);
 }

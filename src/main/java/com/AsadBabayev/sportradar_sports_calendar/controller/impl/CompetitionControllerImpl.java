@@ -26,7 +26,7 @@ public class CompetitionControllerImpl implements CompetitionController {
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<CompetitionDTO> getCompetitionById(@PathVariable String id) {
+    public ResponseEntity<CompetitionDTO> getCompetitionById(@PathVariable Long id) {
         return ResponseEntity.ok(competitionService.getCompetitionById(id));
     }
 
@@ -39,13 +39,13 @@ public class CompetitionControllerImpl implements CompetitionController {
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<CompetitionDTO> updateCompetition(@Valid @RequestBody CompetitionRequestDTO requestDTO,
-                                                            @PathVariable String id) {
+                                                            @PathVariable Long id) {
         return ResponseEntity.ok(competitionService.updateCompetition(requestDTO, id));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<Void> deleteCompetition(@PathVariable String id) {
+    public ResponseEntity<Void> deleteCompetition(@PathVariable Long id) {
         competitionService.deleteCompetition(id);
         return ResponseEntity.noContent().build();
     }

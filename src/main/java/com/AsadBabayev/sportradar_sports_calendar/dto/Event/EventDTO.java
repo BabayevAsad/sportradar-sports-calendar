@@ -39,6 +39,6 @@ public class EventDTO {
 
     private String group;
 
-    private String originCompetitionId;
+    private Long originCompetitionId;
     private String originCompetitionName;
 }

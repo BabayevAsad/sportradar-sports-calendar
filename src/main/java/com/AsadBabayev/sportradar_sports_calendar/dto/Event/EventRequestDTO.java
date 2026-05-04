@@ -15,11 +15,11 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class EventRequestDTO {
 
-    @NotBlank(message = "Competition ID is required")
-    private String competitionId;
+    @NotNull(message = "Competition ID is required")
+    private Long competitionId;
 
-    @NotBlank(message = "Stage ID is required")
-    private String stageId;
+    @NotNull(message = "Stage ID is required")
+    private Long stageId;
 
     @NotNull(message = "Date is required")
     @FutureOrPresent(message = "Match date cannot be in the past")

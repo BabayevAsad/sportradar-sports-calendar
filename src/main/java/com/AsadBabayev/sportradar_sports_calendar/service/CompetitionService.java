@@ -9,11 +9,11 @@ public interface CompetitionService {
 
     List<CompetitionDTO> getAllCompetitions();
 
-    CompetitionDTO getCompetitionById(String id);
+    CompetitionDTO getCompetitionById(Long id);
 
     CompetitionDTO saveCompetition(CompetitionRequestDTO competitionRequestDTO);
 
-    CompetitionDTO updateCompetition(CompetitionRequestDTO competitionRequestDTO, String id);
+    CompetitionDTO updateCompetition(CompetitionRequestDTO competitionRequestDTO, Long id);
 
-    void deleteCompetition(String id);
+    void deleteCompetition(Long id);
 }

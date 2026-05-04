@@ -22,7 +22,7 @@ public class ResultMapper {
         if (entity == null) return null;
 
         String sportName = null;
-        String competitionId = null;
+        Long competitionId = null;
 
         if (entity.getEvent() != null && entity.getEvent().getCompetition() != null) {
             competitionId = entity.getEvent().getCompetition().getId();

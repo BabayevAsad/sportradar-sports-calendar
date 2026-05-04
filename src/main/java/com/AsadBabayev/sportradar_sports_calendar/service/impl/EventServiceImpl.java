@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EventDTO> getEventByCompetitionId(String competitionId) {
+    public List<EventDTO> getEventByCompetitionId(Long competitionId) {
         return eventRepository.findByCompetition_Id(competitionId)
                 .stream()
                 .map(eventMapper::mapToDTO)

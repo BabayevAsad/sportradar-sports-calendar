@@ -10,11 +10,11 @@ public interface StageController {
 
     ResponseEntity<List<StageDTO>> getAllStages();
 
-    ResponseEntity<StageDTO> getStageById(String id);
+    ResponseEntity<StageDTO> getStageById(Long id);
 
     ResponseEntity<StageDTO> createStage(StageRequestDTO requestDTO);
 
-    ResponseEntity<StageDTO> updateStage(StageRequestDTO requestDTO, String id);
+    ResponseEntity<StageDTO> updateStage(StageRequestDTO requestDTO, Long id);
 
-    ResponseEntity<Void> deleteStage(String id);
+    ResponseEntity<Void> deleteStage(Long id);
 }

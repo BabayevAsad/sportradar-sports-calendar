@@ -31,7 +31,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Transactional(readOnly = true)
     @Override
-    public CompetitionDTO getCompetitionById(String id) {
+    public CompetitionDTO getCompetitionById(Long id) {
         return competitionMapper.toDTO(findByIdInternal(id));
     }
 
@@ -48,7 +48,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Transactional
     @Override
-    public CompetitionDTO updateCompetition(CompetitionRequestDTO requestDTO, String id) {
+    public CompetitionDTO updateCompetition(CompetitionRequestDTO requestDTO, Long id) {
         Competition competition = findByIdInternal(id);
 
         competitionMapper.updateEntityFromDto(requestDTO, competition);
@@ -59,12 +59,12 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Transactional
     @Override
-    public void deleteCompetition(String id) {
+    public void deleteCompetition(Long id) {
         Competition competition = findByIdInternal(id);
         competitionRepository.delete(competition);
     }
 
-    private Competition findByIdInternal(String id) {
+    private Competition findByIdInternal(Long id) {
         return competitionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + id));
     }

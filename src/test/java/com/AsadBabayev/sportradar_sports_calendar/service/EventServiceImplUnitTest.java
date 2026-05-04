@@ -55,8 +55,8 @@ class EventServiceImplUnitTest {
                 .build();
 
         requestDto = EventRequestDTO.builder()
-                .competitionId("sr:comp:1")
-                .stageId("sr:stage:1")
+                .competitionId(1L)
+                .stageId(1L)
                 .homeTeamSlug("home-slug")
                 .awayTeamSlug("away-slug")
                 .venueId(50L)
@@ -158,7 +158,7 @@ class EventServiceImplUnitTest {
 
     @Test
     void shouldReturnEventsByCompetitionId() {
-        String compId = "sr:comp:1";
+        Long compId = 1L;
         when(eventRepository.findByCompetition_Id(compId)).thenReturn(List.of(event));
         when(eventMapper.mapToDTO(event)).thenReturn(new EventDTO());
 
