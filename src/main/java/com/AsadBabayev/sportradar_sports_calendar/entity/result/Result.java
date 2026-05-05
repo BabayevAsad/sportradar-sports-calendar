@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "result")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "sport_type")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
