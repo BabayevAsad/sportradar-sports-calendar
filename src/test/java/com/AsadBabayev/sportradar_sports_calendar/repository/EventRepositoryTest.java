@@ -6,11 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 
 import static com.AsadBabayev.sportradar_sports_calendar.entity.SportType.FOOTBALL;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ContextConfiguration(classes = SportradarSportsCalendarApplication.class)
 @ActiveProfiles("test")
-class EventRepositoryTest {
+class EventRepositoryIT {
 
     @Autowired
     private EventRepository eventRepository;
@@ -39,6 +42,7 @@ class EventRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        eventRepository.deleteAll();
 
         Sport sport = Sport.builder()
                 .name(FOOTBALL)
@@ -96,24 +100,46 @@ class EventRepositoryTest {
 
     @Test
     void findAll() {
+        var pageRequest = PageRequest.of(0, 10);
+        var result = eventRepository.findAll(pageRequest);
+
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Champions League", result.getContent().get(0).getCompetition().getName());
     }
 
     @Test
     void findByDate() {
+        List<Event> result = eventRepository.findByDate(LocalDate.of(2024, 5, 20));
+
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals(savedEvent.getId(), result.get(0).getId());
     }
 
     @Test
     void findByCompetition_Id() {
         var result = eventRepository.findByCompetition_Id(savedCompetition.getId());
+
         assertFalse(result.isEmpty());
         assertEquals("Champions League", result.get(0).getCompetition().getName());
+        assertEquals(savedCompetition.getId(), result.get(0).getCompetition().getId());
     }
 
     @Test
     void findById() {
+        Optional<Event> result = eventRepository.findById(savedEvent.getId());
+
+        assertTrue(result.isPresent());
+        assertEquals("SCHEDULED", result.get().getStatus());
+        assertEquals(FOOTBALL, result.get().getCompetition().getSport().getName());
     }
 
     @Test
     void findByCompetition_Sport_Name() {
+        List<Event> result = eventRepository.findByCompetition_Sport_Name(FOOTBALL);
+
+        assertFalse(result.isEmpty());
+        assertEquals(FOOTBALL, result.get(0).getCompetition().getSport().getName());
     }
 }
