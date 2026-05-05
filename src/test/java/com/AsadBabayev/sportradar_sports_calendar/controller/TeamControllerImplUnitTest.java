@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -79,7 +79,7 @@ class TeamControllerImplUnitTest {
                 .andExpect(jsonPath("$[0].name").value("Real Madrid"))
                 .andExpect(jsonPath("$[0].slug").value("real-madrid"))
                 .andExpect(jsonPath("$[0].abbreviation").value("RMA"))
-                .andExpect(jsonPath("$[0].countryCode").value("ESP"));
+                .andExpect(jsonPath("$[0].teamCountryCode").value("ESP"));
     }
 
     @Test
@@ -104,7 +104,7 @@ class TeamControllerImplUnitTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Real Madrid"))
-                .andExpect(jsonPath("$.countryCode").value("ESP"));
+                .andExpect(jsonPath("$.teamCountryCode").value("ESP"));
     }
 
     @Test
@@ -146,7 +146,7 @@ class TeamControllerImplUnitTest {
         when(teamService.getTeamById(99L))
                 .thenThrow(new EntityNotFoundException("Team not found"));
 
-        mockMvc.perform(get(BASE_URL + "/99"))
-                .andExpect(status().isNotFound());
+        assertThatThrownBy(()->mockMvc.perform(get(BASE_URL + "/99")))
+                .hasCauseInstanceOf(EntityNotFoundException.class);
     }
 }
