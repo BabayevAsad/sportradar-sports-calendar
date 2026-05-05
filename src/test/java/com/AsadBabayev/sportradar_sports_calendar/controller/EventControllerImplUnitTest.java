@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -170,7 +171,35 @@ class EventControllerImplUnitTest {
         when(eventService.getEventById(99L))
                 .thenThrow(new EntityNotFoundException("Not found"));
 
-        mockMvc.perform(get(BASE_URL + "/99"))
-                .andExpect(status().isNotFound());
+        assertThatThrownBy(() -> mockMvc.perform(get(BASE_URL + "/99")))
+                .hasCauseInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    void shouldReturnEventByCompetition() throws Exception {
+        when(eventService.getEventByCompetitionId(99l))
+                .thenReturn(List.of(footballEventDto));
+
+        mockMvc.perform(get(BASE_URL + "/by-competition/99"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].sportName").value("FOOTBALL"))
+                .andExpect(jsonPath("$[0].originCompetitionName").value("Premier League"))
+                .andExpect(jsonPath("$[0].status").value("scheduled"));
+    }
+
+    @Test
+    void shouldReturnEventByDate() throws Exception {
+        LocalDate testDate = LocalDate.now().plusDays(1);
+
+        when(eventService.getEventByDate(testDate))
+                .thenReturn(List.of(footballEventDto));
+
+        mockMvc.perform(get(BASE_URL+"/by-date/"+ testDate.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].sportName").value("FOOTBALL"));
+
+        verify(eventService).getEventByDate(testDate);
     }
 }
