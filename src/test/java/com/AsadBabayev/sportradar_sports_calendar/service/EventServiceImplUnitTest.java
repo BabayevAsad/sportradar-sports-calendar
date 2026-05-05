@@ -2,6 +2,7 @@ package com.AsadBabayev.sportradar_sports_calendar.service;
 
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventRequestDTO;
+import com.AsadBabayev.sportradar_sports_calendar.dto.Event.EventResponseDTO;
 import com.AsadBabayev.sportradar_sports_calendar.entity.*;
 import com.AsadBabayev.sportradar_sports_calendar.mapper.EventMapper;
 import com.AsadBabayev.sportradar_sports_calendar.repository.*;
@@ -13,12 +14,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.AsadBabayev.sportradar_sports_calendar.entity.SportType.FOOTBALL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,6 +70,25 @@ class EventServiceImplUnitTest {
                 .date(LocalDate.now().plusDays(1))
                 .timeUtc(LocalTime.of(12, 0))
                 .build();
+    }
+
+    @Test
+    void shouldReturnPaginatedEvents() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Event> eventList = List.of(event);
+        Page<Event> eventPage = new PageImpl<>(eventList, pageable, eventList.size());
+        EventResponseDTO expectedResponse = new EventResponseDTO();
+
+        when(eventRepository.findAll(pageable)).thenReturn(eventPage);
+        when(eventMapper.mapToResponseDTO(eventPage)).thenReturn(expectedResponse);
+
+        EventResponseDTO result = eventService.getAllEvents(pageable);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(expectedResponse);
+
+        verify(eventRepository, times(1)).findAll(pageable);
+        verify(eventMapper, times(1)).mapToResponseDTO(eventPage);
     }
 
     @Test
@@ -166,5 +191,17 @@ class EventServiceImplUnitTest {
 
         assertThat(results).hasSize(1);
         verify(eventRepository).findByCompetition_Id(compId);
+    }
+
+
+    @Test
+    void shouldReturnEventBySport(){
+        when(eventRepository.findByCompetition_Sport_Name(FOOTBALL)).thenReturn(List.of(event));
+        when(eventMapper.mapToDTO(event)).thenReturn(new EventDTO());
+
+        List<EventDTO> result = eventService.getEventsBySport(FOOTBALL);
+
+        assertThat(result).hasSize(1);
+        verify(eventRepository).findByCompetition_Sport_Name(FOOTBALL);
     }
 }
