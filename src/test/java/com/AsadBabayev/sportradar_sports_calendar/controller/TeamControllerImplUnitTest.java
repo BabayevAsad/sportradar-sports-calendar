@@ -3,6 +3,7 @@ package com.AsadBabayev.sportradar_sports_calendar.controller;
 import com.AsadBabayev.sportradar_sports_calendar.controller.impl.TeamControllerImpl;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Team.TeamDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Team.TeamRequestDTO;
+import com.AsadBabayev.sportradar_sports_calendar.exception.GlobalExceptionHandler;
 import com.AsadBabayev.sportradar_sports_calendar.service.TeamService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -47,7 +47,9 @@ class TeamControllerImplUnitTest {
     @BeforeEach
     void setUp() {
 
-        mockMvc = MockMvcBuilders.standaloneSetup(teamController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(teamController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
 
         teamDto = TeamDTO.builder()
                 .id(1L)
@@ -142,11 +144,10 @@ class TeamControllerImplUnitTest {
 
     @Test
     void shouldReturnNotFoundWhenTeamDoesNotExist() throws Exception {
-
         when(teamService.getTeamById(99L))
                 .thenThrow(new EntityNotFoundException("Team not found"));
 
-        assertThatThrownBy(()->mockMvc.perform(get(BASE_URL + "/99")))
-                .hasCauseInstanceOf(EntityNotFoundException.class);
+        mockMvc.perform(get(BASE_URL + "/99"))
+                .andExpect(status().isNotFound());
     }
 }

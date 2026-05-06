@@ -3,6 +3,7 @@ package com.AsadBabayev.sportradar_sports_calendar.controller;
 import com.AsadBabayev.sportradar_sports_calendar.controller.impl.StageControllerImpl;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Stage.StageDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Stage.StageRequestDTO;
+import com.AsadBabayev.sportradar_sports_calendar.exception.GlobalExceptionHandler;
 import com.AsadBabayev.sportradar_sports_calendar.service.StageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -45,7 +45,9 @@ class StageControllerImplUnitTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(stageController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(stageController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
 
         stageDto = new StageDTO();
         stageDto.setId(1L);
@@ -111,7 +113,7 @@ class StageControllerImplUnitTest {
         when(stageService.getStageById(99L))
                 .thenThrow(new EntityNotFoundException("Stage not found"));
 
-        assertThatThrownBy(() -> mockMvc.perform(get(BASE_URL + "/99")))
-                .hasCauseInstanceOf(EntityNotFoundException.class);
+        mockMvc.perform(get(BASE_URL + "/99"))
+                .andExpect(status().isNotFound());
     }
 }

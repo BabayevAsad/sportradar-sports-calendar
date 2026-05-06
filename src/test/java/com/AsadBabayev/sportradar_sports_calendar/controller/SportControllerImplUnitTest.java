@@ -4,6 +4,7 @@ import com.AsadBabayev.sportradar_sports_calendar.controller.impl.SportControlle
 import com.AsadBabayev.sportradar_sports_calendar.dto.Sport.SportDto;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Sport.SportRequestDto;
 import com.AsadBabayev.sportradar_sports_calendar.entity.SportType;
+import com.AsadBabayev.sportradar_sports_calendar.exception.GlobalExceptionHandler;
 import com.AsadBabayev.sportradar_sports_calendar.service.SportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -46,7 +46,9 @@ class SportControllerImplUnitTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(sportController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(sportController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
 
         sportDto = new SportDto();
         sportDto.setId(1L);
@@ -112,7 +114,7 @@ class SportControllerImplUnitTest {
         when(sportService.getSportById(99L))
                 .thenThrow(new EntityNotFoundException("Sport not found"));
 
-        assertThatThrownBy(() -> mockMvc.perform(get(BASE_URL + "/99")))
-                .hasCauseInstanceOf(EntityNotFoundException.class);
+        mockMvc.perform(get(BASE_URL + "/99"))
+                .andExpect(status().isNotFound());
     }
 }

@@ -4,6 +4,7 @@ import com.AsadBabayev.sportradar_sports_calendar.controller.impl.ResultControll
 import com.AsadBabayev.sportradar_sports_calendar.dto.Result.ResultDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Result.request.FootballResultRequestDTO;
 import com.AsadBabayev.sportradar_sports_calendar.dto.Result.request.ResultRequestDTO;
+import com.AsadBabayev.sportradar_sports_calendar.exception.GlobalExceptionHandler;
 import com.AsadBabayev.sportradar_sports_calendar.service.ResultService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -46,7 +46,9 @@ class ResultControllerImplUnitTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(resultController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(resultController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
 
         footballResultResponse = new ResultDTO() {
             {
@@ -129,11 +131,10 @@ class ResultControllerImplUnitTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenResultDoesNotExist() {
+    void shouldThrowExceptionWhenResultDoesNotExist() throws Exception {
         when(resultService.getResultByEventId(99L)).thenThrow(new EntityNotFoundException("Not found"));
 
-        assertThrows(Exception.class, () -> {
-            mockMvc.perform(get(BASE_URL + "/99"));
-        });
+        mockMvc.perform(get(BASE_URL + "/99"))
+                .andExpect(status().isNotFound());
     }
 }
