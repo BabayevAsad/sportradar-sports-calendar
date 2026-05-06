@@ -148,7 +148,7 @@ class ResultServiceImplUnitTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> resultService.saveResult(footballRequest));
 
-        assertThat(exception.getMessage()).isEqualTo("Event not found");
+        assertThat(exception.getMessage()).isEqualTo("Event not found with ID: 1");
     }
 
     @Test

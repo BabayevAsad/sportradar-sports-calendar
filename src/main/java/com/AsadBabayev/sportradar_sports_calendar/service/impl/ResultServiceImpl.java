@@ -8,7 +8,9 @@ import com.AsadBabayev.sportradar_sports_calendar.mapper.ResultMapper;
 import com.AsadBabayev.sportradar_sports_calendar.repository.EventRepository;
 import com.AsadBabayev.sportradar_sports_calendar.repository.ResultRepository;
 import com.AsadBabayev.sportradar_sports_calendar.service.ResultService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,17 +83,17 @@ public class ResultServiceImpl implements ResultService {
 
     private Result getResultByEventIdInternal(Long eventId) {
         return resultRepository.findByEventId(eventId)
-                .orElseThrow(() -> new RuntimeException("Result not found for eventId: " + eventId));
+                .orElseThrow(() -> new EntityNotFoundException("Result not found for eventId: " + eventId));
     }
 
     private Event getEventById(Long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with ID: " + eventId));
     }
 
     private void validateResultNotExists(Long eventId) {
         if (resultRepository.findByEventId(eventId).isPresent()) {
-            throw new RuntimeException("Conflict: A result already exists for event ID " + eventId);
+            throw new DataIntegrityViolationException("Conflict: A result already exists for event ID " + eventId);
         }
     }
 }
