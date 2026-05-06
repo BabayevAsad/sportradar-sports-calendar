@@ -132,7 +132,7 @@ class ResultControllerImplUnitTest {
 
     @Test
     void shouldThrowExceptionWhenResultDoesNotExist() throws Exception {
-        when(resultService.getResultByEventId(99L)).thenThrow(new EntityNotFoundException("Not found"));
+        when(resultService.getResultByEventId(99L)).thenThrow(new EntityNotFoundException("Result not found"));
 
         mockMvc.perform(get(BASE_URL + "/99"))
                 .andExpect(status().isNotFound());
