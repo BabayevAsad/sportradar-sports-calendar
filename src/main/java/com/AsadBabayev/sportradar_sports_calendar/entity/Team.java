@@ -20,7 +20,7 @@ public class Team extends BaseEntity {
     private Long id;
 
     @JsonProperty("name")
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @JsonProperty("official_name")

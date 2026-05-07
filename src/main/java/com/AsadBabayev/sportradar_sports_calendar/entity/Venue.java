@@ -20,7 +20,7 @@ public class Venue extends BaseEntity {
     private Long id;
 
     @JsonProperty("name")
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "city")

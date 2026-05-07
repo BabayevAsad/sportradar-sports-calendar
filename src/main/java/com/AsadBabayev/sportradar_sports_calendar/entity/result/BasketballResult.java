@@ -3,6 +3,9 @@ package com.AsadBabayev.sportradar_sports_calendar.entity.result;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,5 +23,6 @@ public class BasketballResult extends Result {
 
     @ElementCollection
     @CollectionTable(name = "result_basketball_quarters", joinColumns = @JoinColumn(name = "_result_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Integer> quarterPoints = new ArrayList<>();
 }
