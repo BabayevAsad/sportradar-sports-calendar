@@ -23,6 +23,5 @@ public class IceHockeyResult extends Result {
 
     @ElementCollection
     @CollectionTable(name = "result_hockey_periods", joinColumns = @JoinColumn(name = "_result_id"))
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<String> periodScores = new ArrayList<>();
 }

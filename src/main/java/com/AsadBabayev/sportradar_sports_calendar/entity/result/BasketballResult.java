@@ -23,6 +23,5 @@ public class BasketballResult extends Result {
 
     @ElementCollection
     @CollectionTable(name = "result_basketball_quarters", joinColumns = @JoinColumn(name = "_result_id"))
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Integer> quarterPoints = new ArrayList<>();
 }

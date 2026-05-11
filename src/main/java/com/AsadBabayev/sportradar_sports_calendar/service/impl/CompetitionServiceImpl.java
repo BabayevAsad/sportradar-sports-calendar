@@ -8,6 +8,10 @@ import com.AsadBabayev.sportradar_sports_calendar.repository.CompetitionReposito
 import com.AsadBabayev.sportradar_sports_calendar.service.CompetitionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,7 @@ public class CompetitionServiceImpl implements CompetitionService {
     private final CompetitionMapper competitionMapper;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "competitions", key = "'all'")
     @Override
     public List<CompetitionDTO> getAllCompetitions() {
         return competitionRepository.findAll()
@@ -30,12 +35,15 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "competitions", key = "#id")
     @Override
     public CompetitionDTO getCompetitionById(Long id) {
         return competitionMapper.toDTO(findByIdInternal(id));
     }
 
     @Transactional
+    @CachePut(value = "competitions", key = "#result.id")
+    @CacheEvict(value = "competitions", key = "'all'")
     @Override
     public CompetitionDTO saveCompetition(CompetitionRequestDTO requestDTO) {
         Competition competition = new Competition();
@@ -47,6 +55,8 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Transactional
+    @CachePut(value = "competitions", key = "#id")
+    @CacheEvict(value = "competitions", key = "'all'")
     @Override
     public CompetitionDTO updateCompetition(CompetitionRequestDTO requestDTO, Long id) {
         Competition competition = findByIdInternal(id);
@@ -58,6 +68,10 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "competitions", key = "#id"),
+            @CacheEvict(value = "competitions", key = "'all'")
+    })
     @Override
     public void deleteCompetition(Long id) {
         Competition competition = findByIdInternal(id);

@@ -23,6 +23,5 @@ public class TennisResult extends Result {
 
     @ElementCollection
     @CollectionTable(name = "result_tennis_scores", joinColumns = @JoinColumn(name = "_result_id"))
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<String> setScores = new ArrayList<>();
 }

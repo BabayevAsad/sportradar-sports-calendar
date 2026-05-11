@@ -35,21 +35,21 @@ public class ResultServiceImpl implements ResultService {
 
     @Transactional(readOnly = true)
     @Override
-    public ResultDTO getResultByEventId(final Long eventId) {
+    public ResultDTO getResultByEventId(Long eventId) {
         return resultMapper.toDTO(getResultByEventIdInternal(eventId));
     }
 
     @Transactional
     @Override
-    public ResultDTO saveResult(final ResultRequestDTO dto) {
-        final Event event = getEventById(dto.getEventId());
+    public ResultDTO saveResult(ResultRequestDTO dto) {
+        Event event = getEventById(dto.getEventId());
         validateResultNotExists(dto.getEventId());
 
-        final Result result = resultMapper.createEntityBySport(event.getCompetition().getSport().getName());
+        Result result = resultMapper.createEntityBySport(event.getCompetition().getSport().getName());
         result.setEvent(event);
 
         resultMapper.updateEntityFromDto(dto, result);
-        final Result savedResult = resultRepository.save(result);
+        Result savedResult = resultRepository.save(result);
 
         event.setResult(savedResult);
         eventRepository.save(event);
@@ -59,8 +59,8 @@ public class ResultServiceImpl implements ResultService {
 
     @Transactional
     @Override
-    public ResultDTO updateResult(final ResultRequestDTO dto, final Long eventId) {
-        final Result result = getResultByEventIdInternal(eventId);
+    public ResultDTO updateResult(ResultRequestDTO dto, Long eventId) {
+        Result result = getResultByEventIdInternal(eventId);
 
         resultMapper.updateEntityFromDto(dto, result);
 
@@ -70,9 +70,9 @@ public class ResultServiceImpl implements ResultService {
 
     @Transactional
     @Override
-    public void deleteResult(final Long eventId) {
-        final Result result = getResultByEventIdInternal(eventId);
-        final Event event = result.getEvent();
+    public void deleteResult(Long eventId) {
+        Result result = getResultByEventIdInternal(eventId);
+        Event event = result.getEvent();
 
         if (event != null) {
             event.setResult(null);

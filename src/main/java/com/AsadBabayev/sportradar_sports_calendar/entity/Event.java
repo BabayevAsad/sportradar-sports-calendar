@@ -24,7 +24,7 @@ public class Event extends BaseEntity {
     @JoinColumn(name = "_competition_id", nullable = false)
     private Competition competition;
 
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Result result;
 
     @ManyToOne(fetch = FetchType.LAZY)

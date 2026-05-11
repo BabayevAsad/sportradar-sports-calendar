@@ -22,7 +22,7 @@ public abstract class Result extends BaseEntity {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "_event_id", nullable = false)
+    @JoinColumn(name = "_event_id", nullable = true)
     private Event event;
 
     @Column(name = "winner")
