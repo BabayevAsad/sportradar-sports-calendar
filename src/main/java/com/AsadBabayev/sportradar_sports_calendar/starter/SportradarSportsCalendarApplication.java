@@ -3,6 +3,7 @@ package com.AsadBabayev.sportradar_sports_calendar.starter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = "com.AsadBabayev")
 @EnableJpaRepositories(basePackages = "com.AsadBabayev")
 @EntityScan(basePackages = "com.AsadBabayev")
+@EnableCaching
 @EnableJpaAuditing
 public class SportradarSportsCalendarApplication {
 
